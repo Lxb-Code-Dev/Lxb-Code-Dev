@@ -13,8 +13,14 @@ def data_generation(n1,n2,n3):
     return re
 X1=data_generation(333,333,334)
 X2=data_generation(600,300,100)
-
-plt.scatter([x[0] for x in X1],[x[1] for x in X1])
+plt.subplot(1,2,1)
+plt.scatter([x[0] for x in X1[0:333,::]],[x[1] for x in X1[0:333,::]],c='r')
+plt.scatter([x[0] for x in X1[333:666,::]],[x[1] for x in X1[333:666,::]],c='g')
+plt.scatter([x[0] for x in X1[666:,::]],[x[1] for x in X1[666:,::]],c='b')
+plt.subplot(1,2,2)
+plt.scatter([x[0] for x in X2[0:600,::]],[x[1] for x in X2[0:600,::]],c='r')
+plt.scatter([x[0] for x in X2[600:900,::]],[x[1] for x in X2[600:900,::]],c='g')
+plt.scatter([x[0] for x in X2[900:,::]],[x[1] for x in X2[900:,::]],c='b')
 plt.show()
 
 class Pe():
@@ -34,7 +40,7 @@ class Pe():
         :param y: y
         :return: (x,y)的概率密度
         '''
-        return (math.exp((-1/2)*(((x-u1)**2/o)+(y-u2)**2/o)))/(2*o*math.pi)
+        return math.exp((-1/2)*((x-u1)**2/o+(y-u2)**2/o))/(2*o*math.pi)
 
     def classify(self):
         ff=[0,0,0]
@@ -57,7 +63,7 @@ class Pe():
         :param y :y
         :return: 返回p
         '''
-        total=0
+        total=0.0
         for i in Xn:
             total+=math.exp(-((x-i[0])**2+(y-i[1])**2)/(2*h*h))/math.sqrt(2*h*h*math.pi)
         return total/len(Xn)
@@ -67,7 +73,7 @@ class Pe():
         data1=self.data[self.p1:self.p1+self.p2,::]
         data2=self.data[self.p1+self.p2:,::]
         total_score=[]
-        for h in [0.5,1,1.5,2,2.5]:
+        for h in [0.1,0.5,1,1.5,2]:
             ff = [0, 0, 0]
             score = 0
             for i,xy in enumerate(self.data):
@@ -78,7 +84,7 @@ class Pe():
                 if max_f_index == xy[2]:
                     score += 1
                     continue
-            total_score.append(1 - score / (self.p2+self.p1+self.p3))
+            total_score.append( 1-score / (self.p2+self.p1+self.p3))
         return total_score
 
 
