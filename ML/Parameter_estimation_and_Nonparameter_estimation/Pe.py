@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 def data_generation(n1,n2,n3):
     x1=np.random.multivariate_normal((1,1),[[2,0],[0,2]],n1)
     x1_0=[[0]]*n1
@@ -73,22 +74,28 @@ class Pe():
         data1=self.data[self.p1:self.p1+self.p2,::]
         data2=self.data[self.p1+self.p2:,::]
         total_score=[]
-        for h in [0.1,0.5,1,1.5,2]:
+        fig = plt.figure()
+        for index,h in enumerate([0.1,0.5,1,1.5,2]):
             ff = [0, 0, 0]
             score = 0
+            p_list=[]
+            ax=[231,232,233,234,235]
             for i,xy in enumerate(self.data):
                 ff[0]=self.p(h,xy[0],xy[1],data0)
                 ff[1]=self.p(h,xy[0],xy[1],data1)
                 ff[2]=self.p(h,xy[0],xy[1],data2)
                 max_f_index = ff.index(max(ff))
+                p_list.append(max(ff))
                 if max_f_index == xy[2]:
                     score += 1
                     continue
-            total_score.append( 1-score / (self.p2+self.p1+self.p3))
+            total_score.append(1 - score / (self.p2 + self.p1 + self.p3))
+            ax[index] = fig.add_subplot(ax[index],projection='3d')
+            ax[index].scatter3D([x[0] for x in data0], [y[1] for y in data0], p_list[:self.p1], c='r')
+            ax[index].scatter3D([x[0] for x in data1], [y[1] for y in data1], p_list[self.p1:self.p2+self.p1], c='g')
+            ax[index].scatter3D([x[0] for x in data2], [y[1] for y in data2], p_list[self.p1+self.p2:], c='b')
+        plt.show()
         return total_score
-
-
-
 
 pe1=Pe(X1,333,333,334)
 pe2=Pe(X2,600,300,100)
