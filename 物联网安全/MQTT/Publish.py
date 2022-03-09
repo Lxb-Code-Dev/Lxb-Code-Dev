@@ -39,25 +39,15 @@ class publish():
         if message == 'link':
             client.subscribe(name, qos=0)
         message=self.user + '/' +name+'_'+ message+' '+str(time.time())
-        with open("client-public.pem") as f:
-            key = f.read()
-            rsakey = RSA.importKey(key)
-            cipher = Cipher_pkcs1_v1_5.new(rsakey)
-            cipher_text = base64.b64encode(cipher.encrypt(message.encode('utf-8')))
-        client.publish(topic, payload=cipher_text, qos=0)
+
+        client.publish(topic, payload=message, qos=0)
 
 
 #str(time.time())
 
 def on_message(client,userdata,msg):
     print(msg.topic + " " + str(msg.payload.decode()))
-    with open("server-private.pem") as f:
-        key = f.read()
-        rsakey = RSA.importKey(key)
-        cipher = Cipher_pkcs1_v1_5.new(rsakey)
-        random_generator = Random.new().read
-        text = cipher.decrypt(base64.b64decode(msg.payload), random_generator)
-    print(text.decode('utf-8'))
+
 client=mqtt.Client()
 client.on_message=on_message
 client.connect('127.0.0.1',1883,600)

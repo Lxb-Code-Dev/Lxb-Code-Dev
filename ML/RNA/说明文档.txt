@@ -1,0 +1,13 @@
+data_processing.py   获取数据集
+DCA.py 模型搭建
+loss.py  损失函数
+train.py 对test_data进行训练补差，根据结果找到最优超参数
+main.py 使用上述找到的最优超参数，对data数据集进行补差，结果保存在data_predict.csv中
+训练的模型保存在data_predict_model.pt中，为了方便助教检查，这里已经留有一个模型以及一份
+补差结果，当然也可以运行main.py，根据提示输入重新进行训练对data进行补差，这可能会耗费一些
+时间
+
+build和dist两个文件夹为使用pyinstaller生成可执行文件时生成的文件夹，但是在生成可执行文件时
+遇到无法加载torch动态链接库的问题，因此可执行文件可能无法正常运行orz
+
+运行环境：python3.8  torch 1.9.0(GPU)  pycharm，具体的库版本在在报告中有提到
